@@ -21,6 +21,13 @@ bool isSmaller( void *x, void *y)
     return *myX < *myY;
 }
 
+void mySwap(void *x, void *y)
+{
+    int *myX = (int*)x;
+    int *myY = (int*)y;
+    std::swap(*myX, *myY);
+}
+
 int main(int argc, char const *argv[])
 {
     int a[]{1,2,3,3,3,4,5,-1,-1, 4, 666};
@@ -29,6 +36,15 @@ int main(int argc, char const *argv[])
 
     printArray(std::begin(a), std::end(a));
     std::cout << "Smallest element of the above array is "<< *index << " at index " << std::distance(std::begin(a), index) << std::endl;
+
+    graal::reverse(std::begin(a), std::end(a), sizeof(int), mySwap);
+    std::cout << "Reverted array: ";
+    printArray(std::begin(a), std::end(a));
+
+    std::cout << "Creatig new array b[] with size 11.\nValue of b[]: " << std::flush;
+    int b[11];
+    int *bLast = (int*) graal::copy(std::begin(a), std::end(a), std::begin(b), sizeof(int));
+    printArray(std::begin(b), bLast);
 
     return 0;
 }
