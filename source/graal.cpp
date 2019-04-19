@@ -51,4 +51,92 @@ namespace graal{
         return newFirstB;
     }
 
+    void * clone(void * first, void *last, std::size_t typeSize)
+    {
+        byte *newFirst = (byte *) first;
+        byte *newLast = (byte *) last;
+        int size = std::distance(newFirst, newLast);
+
+        byte *newArray = new byte[size];
+        byte *firstIndex = newArray;
+
+        while(newFirst != newLast)
+        {
+            *newArray = *newFirst;
+            newFirst++;
+            newArray++;
+        }
+
+        return firstIndex;
+    }
+
+    void * find_if(void * first, void *last, std::size_t typeSize, bool (predicate)(void *))
+    {
+        byte * newFirst = (byte*)first + typeSize;
+        byte * newLast = (byte*) last;
+
+        while(newFirst != newLast)
+        {
+            if(predicate(newFirst))
+                return newFirst;
+            newFirst+= typeSize;
+        }
+        
+        return last;
+    }
+
+    bool all_of(void * first, void *last, std::size_t typeSize, bool (predicate)(void *))
+    {
+        byte * newFirst = (byte*)first + typeSize;
+        byte * newLast = (byte*) last;
+
+        if(newFirst == newLast)
+            return true;
+
+        while(newFirst != newLast)
+        {
+            if(!predicate(newFirst))
+                return false;
+            newFirst+= typeSize;
+        }
+        
+        return true;
+    }
+
+    bool any_of(void * first, void *last, std::size_t typeSize, bool (predicate)(void *))
+    {
+        byte * newFirst = (byte*)first + typeSize;
+        byte * newLast = (byte*) last;
+
+        if(newFirst == newLast)
+            return true;
+
+        while(newFirst != newLast)
+        {
+            if(predicate(newFirst))
+                return true;
+            newFirst+= typeSize;
+        }
+        
+        return false;
+    }
+
+    bool none_of(void * first, void *last, std::size_t typeSize, bool (predicate)(void *))
+    {
+        byte * newFirst = (byte*)first + typeSize;
+        byte * newLast = (byte*) last;
+
+        if(newFirst == newLast)
+            return true;
+
+        while(newFirst != newLast)
+        {
+            if(predicate(newFirst))
+                return false;
+            newFirst+= typeSize;
+        }
+        
+        return true;
+    }
+
 }
